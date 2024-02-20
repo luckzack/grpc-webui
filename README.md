@@ -1,7 +1,7 @@
 
 # gRPC-webui
 
-Like Postman, but for gRPC: web based GUI client for gRPC Development Testing
+👨‍💻Like Postman, but for gRPC: web based GUI client for gRPC Development Testing
 
 Turn [gRPCli](https://github.com/gogoods/grpcli) into web based UI, extremely easy to use
 
@@ -36,4 +36,7 @@ configure app preferences by editing `config.env` file
 set value `0 (zero)` to disable auto close idle connection.
 
 ## Demo
-![gRPCox Demo](./assets/grpc-webui.gif)
+![gRPCox Demo](./assets/grpc-webui.png)
+
+
+![gRPCox Demo](./assets/grpc-webui.webp)

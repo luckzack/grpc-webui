@@ -27,8 +27,8 @@ func Run(call, host string, insecure bool, metadata map[string]string, data io.R
 		runner.WithDataFromReader(data),
 		runner.WithInsecure(insecure),
 		//runner.WithConnections(100),
-		runner.WithConcurrency(10),
-		runner.WithTotalRequests(1000),
+		runner.WithConcurrency(5),
+		runner.WithTotalRequests(50),
 		runner.WithRPS(100),
 	)
 
