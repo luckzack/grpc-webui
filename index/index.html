@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>gRPC❤️webui</title>
+  <link rel="icon" href="img/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/mdb.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/proto.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container pt-50">
+    <div class="row animated fadeIn">
+      <div class="col">
+        <div class="md-form input-group">
+          <input type="text" class="form-control" id="server-target">
+          <label for="server-target">gRPC Server Target</label>
+          <div class="input-group-append">
+            <button id="get-services" class="btn btn-mdb-color waves-effect m-0" type="button"><i class="fa fa-plug"></i></button>
+          </div>
+          <div class="input-group-append">
+            <button id="copy-link" class="btn btn-mdb-color waves-effect m-0" type="button"><i class="fa fa-clipboard"></i></button>
+          </div>
+          <div class="input-group-append">
+            <button id="duplicate-page" class="btn btn-mdb-color waves-effect m-0" type="button"><i class="fa fa-share-square-o"></i></button>
+          </div>
+        </div>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="restart-conn">
+          <label class="custom-control-label" for="restart-conn">Restart Connection</label>
+        </div>
+
+        <div class="input-group">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="local-proto">
+                <label class="custom-control-label" for="local-proto">Use local proto</label>
+            </div>
+        </div>
+
+        <div class="input-group" id="proto-input" style="display: none">
+            <div class="proto-top-collection">
+                <input class="proto-uploader" type="file" id="proto-file" multiple>
+                <label for="proto-file"><i class="fa fa-plus-circle"></i> proto files</label>
+
+                <span id="proto-collection-toggle" class="proto-toggle">Hide Proto Collection</span>
+            </div>
+
+            <div class="proto-collection"></div>
+        </div>
+
+        <br>
+        <div class="" id="choose-metadata" style="">
+          <div class="md-form input-group">
+            <input type="text" class="form-control" id="metadata" value='{"uid":"10000", "platform":"wx"}'>
+            <label for="metadata">Metadata</label>
+          </div>
+        </div>
+
+        <div class="other-elem" id="choose-service" style="display: none">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text btn-dark w-120" for="select-service"><i class="fa fa-television"></i>&nbsp;&nbsp;Services</span>
+            </div>
+            <select class="browser-default custom-select" id="select-service"></select>
+          </div>
+        </div>
+
+        <div class="other-elem" id="choose-function" style="display: none">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text btn-dark w-120" for="select-function"><i class="fa fa-rocket"></i>&nbsp;&nbsp;Methods</span>
+            </div>
+            <select class="browser-default custom-select" id="select-function"></select>
+          </div>
+        </div>
+
+        <div class="row other-elem" id="body-request" style="display: none">
+          <div class="col-md-7">
+            <div class="card">
+              <div class="card-body schema-body">
+                <pre id="editor"></pre>
+              </div>
+            </div>
+            <button class="btn btn-primary waves-effect mt-10" id="invoke-func" type="button"><i class="fa fa-play"></i>&nbsp;&nbsp;Submit</button>
+          </div>
+          <div class="col-md-5">
+            <div class="card">
+              <div class="card-body schema-body">
+                <h4 class="card-title"><a>Schema Input</a></h4>
+                <pre class="prettyprint custom-pretty" id="schema-proto"></pre>
+              </div>
+            </div>
+            <button class="btn btn-primary waves-effect mt-10" id="loadtest-func" type="button" style="background-color: #ff5900!important;"><i class="fa fa-forward"></i>&nbsp;&nbsp;LOAD TEST</button>
+          </div>
+        </div>
+
+        <div class="row other-elem" id="response" style="display: none">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <small class="pull-right" id="timer-resp">Time : <span></span></small>
+                <h4 class="card-title"><a>Response:</a></h4>
+                <p class="card-text">
+                  <pre class="prettyprint custom-pretty" id="json-response"></pre>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a target="_blank" href="./" class="github-corner" aria-label="config">
+    <svg width="50" height="50" viewBox="0 0 250 250" style="fill:#555555; color:#fff; position: absolute; top: 0; border: 0; right: 0;"
+         aria-hidden="true">
+      <path d="M0,0 L115,115 L250,250 L250,0 Z"></path>
+    </svg>
+  </a>
+
+  <div class="connections">
+      <div class="title">
+              <svg class="dots" expanded = "true" height = "100px" width = "100px"><circle cx = "50%" cy = "50%" r = "7px"></circle><circle class = "pulse" cx = "50%" cy = "50%" r = "10px"></circle></svg>
+              <span></span> Active Connection(s)
+      </div>
+      <div id="conn-list-template" style="display:none"><li><i class="fa fa-close" data-toggle="tooltip" title="close connection"></i> <span class="ip"></span></li></div>
+      <ul class="nav">
+      </ul>
+  </div>
+
+  <div class="spinner" style="display: none">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+  </div>
+
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!--  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
+  <script type="text/javascript" src="js/style.js"></script>
+  <script type="text/javascript" src="js/proto.js"></script>
+</body>
+
+</html>

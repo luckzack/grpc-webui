@@ -1,0 +1,11 @@
+version: '3'
+services:
+  grpc-webui:
+    build: .
+    ports:
+      - "6969:6969"
+    volumes:
+      - ./index:/index
+      - ./log:/log
+    env_file:
+      - config.env

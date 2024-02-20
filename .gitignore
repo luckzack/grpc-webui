@@ -1,0 +1,5 @@
+.idea
+grpc-webui
+grpc-webui.exe
+log
+*.out
